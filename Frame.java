@@ -3,6 +3,7 @@ public class Frame {
     private boolean dirty;
     private boolean pinned;
     private int blockID;
+    private int recordSize = 40;
 
 
 
@@ -51,13 +52,21 @@ public class Frame {
     }
 
     public byte[] returnSpecificRecord(int numOfRecord){
-        Record record=new Record(0,0);
-        if(numOfRecord%40!=0){
-//            record.recID=(numOfRecord/40)+1;
-
+        byte[] record = new byte[this.recordSize];
+        for(int i = 0; i < this.recordSize; i++){
+            record[i] = this.content[i + (this.recordSize * numOfRecord)];
         }
-        return content;
+        return record;
     }
+
+    public void makeDirty(int numOfRecord, byte[] record){
+        for(int i = 0; i < this.recordSize; i++){
+            content[i + (this.recordSize * numOfRecord)] = record[i];
+        }
+        this.dirty = true;
+    }
+
+
 
 
 

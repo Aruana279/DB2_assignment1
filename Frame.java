@@ -2,7 +2,7 @@ public class Frame {
     private byte[] content=new byte[4*1024];
     private boolean dirty;
     private boolean pinned;
-    private int blockID;
+    private int blkID;
     private int recordSize = 40;
 
 
@@ -30,7 +30,7 @@ public class Frame {
     }
 
     public void setBlockID(int blockID) {
-        this.blockID = blockID;
+        this.blkID = blockID;
     }
 
 
@@ -38,6 +38,7 @@ public class Frame {
     public byte[] getContent() {
         return content;
     }
+    public void setContent(byte[] content){this.content = content;}
 
     public boolean isDirty() {
         return dirty;
@@ -47,16 +48,23 @@ public class Frame {
         return pinned;
     }
 
-    public int getBlockID() {
-        return blockID;
+    public int getBlkID() {
+        return blkID;
     }
 
-    public byte[] returnSpecificRecord(int numOfRecord){
+    public byte[] getSpecificRecord(int numOfRecord){
         byte[] record = new byte[this.recordSize];
         for(int i = 0; i < this.recordSize; i++){
             record[i] = this.content[i + (this.recordSize * numOfRecord)];
         }
         return record;
+    }
+
+    public void setSpecificRecord(int numOfRecord, byte[] contentOfSpecRecord){
+        this.dirty = true;
+        for(int i = 0; i < this.recordSize; i++){
+            content[i + (this.recordSize * numOfRecord)] = contentOfSpecRecord[i];
+        }
     }
 
     public void makeDirty(int numOfRecord, byte[] record){
